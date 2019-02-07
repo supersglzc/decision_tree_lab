@@ -7,7 +7,7 @@ def main(col_names=None):
     # parse command-line arguments to read the name of the input csv file
     # and optional 'draw tree' parameter
     if len(sys.argv) < 2:  # input file name should be specified
-        print ("Please specify input csv file name")
+        print("Please specify input csv file name")
         return
 
     csv_file_name = sys.argv[1]
@@ -18,7 +18,7 @@ def main(col_names=None):
         for row in readCSV:
             data.append(list(row))
 
-    print("Total number of records = ",len(data))
+    print("Total number of records = ", len(data))
     tree = dtree_build.buildtree(data, min_gain =0.01, min_samples = 5)
 
     dtree_build.printtree(tree, '', col_names)
@@ -27,8 +27,8 @@ def main(col_names=None):
     print("max number of questions=" + str(max_tree_depth))
 
     if len(sys.argv) > 2: # draw option specified
-        import dtree_draw
-        dtree_draw.drawtree(tree, jpeg=csv_file_name+'.jpg')
+        import dtree_draw_for_decision_tree
+        dtree_draw_for_decision_tree.drawtree(tree, jpeg=csv_file_name + '.jpg')
 
     if len(sys.argv) > 3:  # create json file for d3.js visualization
         import json

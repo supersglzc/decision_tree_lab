@@ -20,5 +20,5 @@ if __name__ == "__main__":
     max_tree_depth = dtree_build.max_depth(tree)
     print("max number of questions="+str(max_tree_depth))
     if len(sys.argv) > 1: # draw option specified
-        import dtree_draw
-        dtree_draw.drawtree(tree, jpeg='fruits_dt.jpg')
+        import dtree_draw_for_regression_tree
+        dtree_draw_for_regression_tree.drawtree(tree, jpeg='fruits_dt.jpg')

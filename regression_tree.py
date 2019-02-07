@@ -77,7 +77,22 @@ def variance(rows):
     return variance
 
 
+def prediction2(leaf_labels):
+    total = 0
+    sum = 0
+    for value in leaf_labels:
+        total += 1
+        sum += float(value)
+    return round(float(sum/total), 2)
 
+
+def average(rows):
+    results = []
+    for row in rows:
+        # The result is the last column
+        r = row[len(row) - 1]
+        results += [r]
+    return results
 
 
 def prediction(leaf_labels):
@@ -143,7 +158,7 @@ def mdclassify(observation, tree):
             return mdclassify(observation, branch)
 
 
-def buildtree(rows, scoref=entropy,
+def buildtree(rows, scoref=variance,
               min_gain=0, min_samples=0):
     if len(rows) == 0:
         return decisionnode()
@@ -181,7 +196,7 @@ def buildtree(rows, scoref=entropy,
         return decisionnode(col=best_criteria[0], value=best_criteria[1],
                             tb=trueBranch, fb=falseBranch)
     else:
-        return decisionnode(results=uniquecounts(rows))
+        return decisionnode(results=average(rows))
 
 
 def max_depth(tree):
@@ -199,7 +214,7 @@ def max_depth(tree):
             return fDepth + 1
 
 
-def printtree(tree, current_branch, attributes=None,  indent='', leaff=prediction):
+def printtree(tree, current_branch, attributes=None,  indent='', leaff=prediction2):
     # Is this a leaf node?
     if tree.results != None:
         print(indent + current_branch + str(leaff(tree.results)))
