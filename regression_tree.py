@@ -77,21 +77,14 @@ def variance(rows):
     return variance
 
 
-def prediction2(leaf_labels):
-    total = 0
-    sum = 0
-    for value in leaf_labels:
-        total += 1
-        sum += float(value)
-    return round(float(sum/total), 2)
-
-
 def average(rows):
-    results = []
+    results = {}
     for row in rows:
         # The result is the last column
         r = row[len(row) - 1]
-        results += [r]
+        if r not in results:
+            results[r] = 0
+        results[r] += 1
     return results
 
 
@@ -105,8 +98,16 @@ def prediction(leaf_labels):
     for label, val in result.items():
         result[label] = str(int(result[label]/total * 100))+"%"
 
-
     return result
+
+
+def prediction2(leaf_labels):
+    total = 0
+    result = 0
+    for label, count in leaf_labels.items():
+        total += count
+        result += count*float(label)
+    return round(float(result/total), 2)
 
 
 def classify(observation, tree):
@@ -184,7 +185,7 @@ def buildtree(rows, scoref=variance,
             # Information gain
             p = float(len(set1)) / len(rows)
             gain = current_score - p * scoref(set1) - (1 - p) * scoref(set2)
-            if gain > best_gain and len(set1) > min_samples and len(set2) > min_samples:
+            if gain > best_gain and len(set1) > min_samples and len(set2) > min_samples and gain > min_gain:
                 best_gain = gain
                 best_criteria = (col, value)
                 best_sets = (set1, set2)
