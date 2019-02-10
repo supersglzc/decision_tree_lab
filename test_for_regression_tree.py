@@ -17,19 +17,25 @@ def main(col_names=None):
     with open(csv_file_name) as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         for row in readCSV:
-            data.append(list(row))
+            information = []
+            for attribute in row:
+                try:
+                    information += [float(attribute)]
+                except ValueError:
+                    information += [attribute]
+            data.append(information)
 
     print("Total number of records = ", len(data))
-    tree = regression_tree.buildtree(data, min_gain =0.005, min_samples = 5)
+    tree = regression_tree.buildtree(data, min_gain =0.001, min_samples = 5)
 
     regression_tree.printtree(tree, '', col_names)
 
     max_tree_depth = dtree_build.max_depth(tree)
     print("max number of questions=" + str(max_tree_depth))
 
-    print("System Programming 'teaching', 'not minority', 'female', 'english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'not minority', 'female', 'English', '50', '30', 'lower', '7', '4'], tree))
-    print("History of Video Game 'teaching', 'not minority', 'male', 'english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'not minority', 'male', 'non-english', '50', '30', 'lower', '7', '4'], tree))
-    print("Spanish I 'teaching', 'not minority', 'male', 'non-english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'minority', 'male', 'non-english', '50', '30', 'lower', '7', '4'], tree))
+    print("System Programming 'teaching', 'not minority', 'female', 'english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'not minority', 'female', 'english', 50, 30, 'lower', 7, 4], tree))
+    print("History of Video Game 'teaching', 'not minority', 'male', 'english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'not minority', 'male', 'non-english', 50, 30, 'lower', 7, 4], tree))
+    print("Spanish I 'teaching', 'not minority', 'male', 'non-english', '50', '30', 'lower', '7', '4' is: ", dtree_build.classify(['teaching', 'minority', 'male', 'non-english', 50, 30, 'lower', 7, 4], tree))
 
     if len(sys.argv) > 2: # draw option specified
         import dtree_draw_for_regression_tree

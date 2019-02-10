@@ -16,7 +16,13 @@ def main(col_names=None):
     with open(csv_file_name) as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         for row in readCSV:
-            data.append(list(row))
+            information = []
+            for attribute in row:
+                try:
+                    information += [float(attribute)]
+                except ValueError:
+                    information += [attribute]
+            data.append(information)
 
     print("Total number of records = ", len(data))
     tree = dtree_build.buildtree(data, min_gain =0.01, min_samples = 5)
@@ -52,7 +58,6 @@ if __name__ == "__main__":
                  'bty_avg',
                  'prof_eval']
     main(col_names)
-
 
 
 
