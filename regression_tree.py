@@ -77,17 +77,6 @@ def variance(rows):
     return variance
 
 
-def average(rows):
-    results = {}
-    for row in rows:
-        # The result is the last column
-        r = row[len(row) - 1]
-        if r not in results:
-            results[r] = 0
-        results[r] += 1
-    return results
-
-
 def prediction(leaf_labels):
     total = 0
     result = {}
@@ -197,7 +186,7 @@ def buildtree(rows, scoref=variance,
         return decisionnode(col=best_criteria[0], value=best_criteria[1],
                             tb=trueBranch, fb=falseBranch)
     else:
-        return decisionnode(results=average(rows))
+        return decisionnode(results=uniquecounts(rows))
 
 
 def max_depth(tree):
